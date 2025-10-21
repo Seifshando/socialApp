@@ -66,7 +66,7 @@ function getAllPosts() {
               alt={post?.body} 
               />)}
 
-              {data && <Comment comment={post?.comments[0]}/>}
+              {post?.comments?.length > 0 && <Comment comment={post?.comments[0]}/>}
           </Link>
               <CreateComment postId={post.id}/>
           </div>
