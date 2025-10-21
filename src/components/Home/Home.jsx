@@ -1,7 +1,3 @@
-import React, { useContext, useEffect, useState } from 'react'
-import style from './Home.jsx'
-// import { Context } from '../../Hamada/Hamada.jsx'
-import { PostContext } from '../../Hamada/PostContext.jsx'
 import { useQuery } from '@tanstack/react-query'
 import axios from 'axios'
 import { Link } from 'react-router-dom';
@@ -12,38 +8,24 @@ import CreatePost from '../CreatePost/CreatePost.jsx'
 
 
 export default function Home() {
-//   const [posts, setposts] = useState([]);
 
-//   let {getAllPosts} = useContext(PostContext);
+function getAllPosts() {
+  return axios.get(`https://linked-posts.routemisr.com/posts?limit=50`, {
+    headers: {
+      token: localStorage.getItem('userToken'),
+    },
+  });
+}
 
-//   async function getPost(){
-//     let res = await getAllPosts();
-
-//     console.log(res);
-//     if(res.length){
-//       setposts(res);
-//     }
-//   }
-
-//   useEffect(() =>{
-//     getPost()
-//   },[])
-
-
-
-  function getAllPosts(){
-    return axios.get(`https://linked-posts.routemisr.com/posts?limit=50`, {
-      headers : {
-        token : localStorage.getItem('userToken'),
-      }, 
-    })
-  }
 
   let {data , isLoading, error, isError} = useQuery({
     queryKey : ['getPosts'],
     queryFn : getAllPosts,
     select : (data) => data?.data?.posts
   });
+
+  console.log(data);
+  
 
   // console.log(data);
   
@@ -85,9 +67,6 @@ export default function Home() {
               />)}
 
               {data && <Comment comment={post?.comments[0]}/>}
-              {/* <div>
-              {post?.comments[0]}
-              </div> */}
           </Link>
               <CreateComment postId={post.id}/>
           </div>
